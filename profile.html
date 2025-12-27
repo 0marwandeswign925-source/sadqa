@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>صفحتك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* حط الزرار في عمود واحد */
+button {
+  margin: 10px 10px;   /* يسوي مسافة فوق وتحت ويخليهم في النص */
+  width: 90%;
+  max-width: 150px;
+  padding: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  background: #4CA2AF;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+#linkBox{
+  margin-top:5px;
+  padding:5px;
+  background:#4CA2AF;
+  word-break: break-all;
+  user-select: all;
+  direction:ltr;
+  font-family: monospace;
+  color: #FFFFFF;
+  border-radius: 9px;
+}
+#msg{
+  color: #FDFFFF;
+  margin-top: 10px;
+  display: none;
+}
+#dhikrDisplay{
+  margin-top:30px;
+  font-size: 24px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1 class="user"id="username"class=""></h1>
+<hr />
+<!-- زر نسخ اللينك -->
+<button onclick="copyLink()">نسخ رابط الصفحة</button>
+<div id="linkBox"></div>
+<p id="msg">تم نسخ اللينك</p>
+<hr />
+<!-- أزرار الأذكار -->
+<h2>اضغط على الأذكار</h2>
+<button onclick="incrementDhikr(0)">سبحان الله</button>
+<button onclick="incrementDhikr(1)">الحمدلله</button>
+<button onclick="incrementDhikr(2)">لا اله الا الله</button>
+<button onclick="incrementDhikr(3)">
+  الله اكبر
+</button>
+<button onclick="incrementDhikr(4)">
+  لا حول ولا قوة إلا بالله 
+</button>
+
+<div id="dhikrDisplay"></div>
+<hr />
+<div>
+  <h3 class="heading">أدعية للميت 🤍
+  </h3>
+    <p>اللهم اغفر له وارحمه، وعافه واعفُ عنه، وأكرم نُزُله، ووسّع مدخله، واغسله بالماء والثلج والبرد.
+    
+    
+    اللهم اجعل قبره روضةً من رياض الجنة، ولا تجعله حفرةً من حفر النار.
+   اللهم آنسه في وحدته، وآنسه في وحشته، وآنسه في غربته.
+    اللهم ثبّته عند السؤال، واجعل ما بعد الموت خيرًا له مما قبله.
+اللهم اجزه عن الإحسان إحسانًا، وعن الإساءة عفوًا وغفرانًا.
+</p>
+</div>
+<hr />
+  <button onclick="location.href='index.html'" class="add-new-button">اعمل صدقة جارية</button>
+
+<script>
+// --- بيانات الاسم ---
+let params = new URLSearchParams(window.location.search);
+let name = params.get("name");
+document.getElementById("username").innerText =
+  name ? "صدقة جارية عن " + name : "";
+
+// --- اللينك ---
+let myLink = window.location.href;
+document.getElementById("linkBox").innerText = myLink;
+
+// دالة النسخ
+function copyLink(){
+  navigator.clipboard.writeText(myLink).then(() => {
+    let msg = document.getElementById("msg");
+    msg.style.display = "block";
+    setTimeout(() => { msg.style.display = "none"; }, 2000);
+  });
+}
+// --- عداد الأذكار بالترتيب ---
+let dhikr = ["سبحان الله", "الحمدلله", "لا اله الا الله", "الله اكبر" ,"لا حول ولا قوة إلا بالله"];
+let counts = [0, 0, 0, 0, 0];
+let maxCount = 33;
+let currentIndex = 0; // الذكر الحالي اللي مفروض نشتغل عليه
+
+function incrementDhikr(index){
+    // يمنع الضغط على الأذكار اللي بعد الدور الحالي
+    if(index !== currentIndex){
+        document.getElementById("dhikrDisplay").innerText = 
+        "ابدأ بالأذكار بالترتيب: " + dhikr[currentIndex];
+        return;
+    }
+
+    // عدّاد الذكر الحالي
+    if(counts[index] < maxCount){
+        counts[index]++;
+        document.getElementById("dhikrDisplay").innerText =
+          dhikr[index] + " : " + counts[index];
+    }
+
+    // عند إكمال 33 ينتقل تلقائي للذكر التالي
+    if(counts[index] === maxCount){
+        alert(dhikr[index] + " اكتمل 33 مرة ✔");
+
+        // انتقال للذكر التالي لو لسه فيه
+        if(currentIndex < dhikr.length - 1){
+            currentIndex++;
+            document.getElementById("dhikrDisplay").innerText =
+              "انتقل الآن إلى: " + dhikr[currentIndex];
+        } else {
+            document.getElementById("dhikrDisplay").innerText =
+              "تم إكمال جميع الأذكار 🎉";
+        }
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>صدقة جارية - ذكر</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="heading">
+  <h1>اكتب اسم المتوفي</h1>
+</div>
+
+<div class="container">
+  <p>
+    هنا اكتب اسم المتوفي/ة  
+    واجعل نيتك للمتوفي/ة  
+    وإن شاء الله يكون في ميزان حسناته
+  </p>
+
+  <input type="text" id="name" placeholder="اسم المتوفي">
+
+  <p id="error" class="error"></p>
+
+  <button onclick="go()" class="next-btn">التالي</button>
+</div>
+
+<script>
+function go(){
+  let name = document.getElementById("name").value.trim();
+  let error = document.getElementById("error");
+
+  if(name === ""){
+    error.textContent = "⚠ يجب كتابة اسم المتوفي أولاً";
+    return;
+  }
+
+  error.textContent = "";
+  window.location.href = "profile.html?name=" + encodeURIComponent(name);
+}
+</script>
+
+</body>
+</html>
